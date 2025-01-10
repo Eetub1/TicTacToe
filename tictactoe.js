@@ -1,33 +1,32 @@
 
-//this is an iife factory that returns the board object
-const Gameboard = (() => {
-    return {
-        board: [
-            ["-", "-", "-"],
-            ["-", "-", "-"],
-            ["-", "-", "-"]
-        ],
-    }
-})();
+function Gameboard () {
+    const rows = 3;
+    const columns = 3;
+    const board = [];
 
-//displayController
-const DisplayController (() => {
-    //method that takes coordinates of the board and places playerone marker on the spot
-    //method that takes coordinates of the board and places playertwo marker on the spot
-    return {//those methods};
-})();
+    for (let i = 0; i < rows; i++) {
+        board[i] = [];
+        for (let j = 0; j < columns; j++) {
+          board[i].push(" ");
+        }
+      }
+    console.log(board);
 
-const playerOne = {
-    name: "",
-    marker: "X"
-};
+    //returns the board object
+    const getBoard = () => board;
 
-const playerTwo = {
-    name: "",
-    marker: "O"
-};
+    //this method is used to place a players marker on the board
+    const placeMarker 
 
+    //prints the whole board in console
+    //this is not needed when building the UI
+    const printBoard = () => {
+        const boardCellValues = board.map((row) => row.map((cell) =>
+        cell.getValue()))
+        console.log(boardCellValues)
+    };
 
-function isGameOver() {
-
+    return { getBoard, printBoard};
 }
+
+Gameboard();
