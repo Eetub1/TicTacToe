@@ -1,13 +1,20 @@
 const start = document.getElementById("start");
-
 start.addEventListener("click", GameController);
 
+//what represents empty space on the board
+const empty = "";
+
 function GameBoard() {
-    const board = [
-        ["", "", ""],
-        ["", "", ""],
-        ["", "", ""]
-    ]
+    const rows = 3;
+    const columns = 3;
+    const board = [];
+
+    for (let i = 0; i < rows; i++) {
+        board[i] = [];
+        for (let j = 0; j < columns; j++) {
+            board[i][j] = empty;
+        } 
+    }
 
     const getBoard = () => board;
 
@@ -19,12 +26,12 @@ function GameBoard() {
         }
     }
 
+    //ei tarvita enää kun tehdään käyttöliittymää
     const printBoard = () => {
         for (let row of board) {
             console.log(row.join(" | "));
         }
     }
-
     return {getBoard, placeMarker, printBoard};
 }
 
@@ -61,16 +68,30 @@ function GameController() {
     }
 
     function isGameOver() {
+        let lauta = board.getBoard()
         //horizontal check
-        for (row of board.getBoard()) {
-            if (row[0] === row[1] && row[1] === row[2] && row[0] != "") return true;
+        for (row of lauta) {
+            if (row[0] === row[1] && row[1] === row[2] && row[0] != "") return 1;
         }
 
         //vertical check
+        for (let i = 0; i < 3; i++) {
+            if (lauta[0][i] === lauta[1][i] && lauta[1][i] === lauta[2][i] && lauta[0][i] != "") return 1;
+        }
 
         //crisscross check
+        if (lauta[0][0] === lauta[1][1] && lauta[1][1] === lauta[2][2] && lauta[0][0] != "") return 1;
+        if (lauta[0][2] === lauta[1][1] && lauta[1][1] === lauta[2][0] && lauta[0][2] != "") return 1;
 
-        return false;
+        //tie check
+        let notEmptyCells = 0;
+        for (row of lauta) {
+            for (cell of row) {
+                if (cell != empty) notEmptyCells += 1;
+            }
+            if (notEmptyCells === 9) return 2;
+        }
+        return 0;
     }
 
     while (true) {
@@ -85,10 +106,16 @@ function GameController() {
         
         board.printBoard();
 
-        if (isGameOver() === true) break;
+        if (isGameOver() === 1) {
+            console.log(`Game over, ${turn} won the game!`);
+            break;
+        }
+        else if (isGameOver() === 2) {
+            console.log("Its a tie!");
+            break;
+        }
 
         switchTurns();
     }
-    //TODO: tee tarkempi viesti josta näkee kumpi voitti
-    console.log(`Game over, ${turn} won the game!`)
+    
 }
