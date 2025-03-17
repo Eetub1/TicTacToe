@@ -1,0 +1,31 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+div {
+    border: 1px solid black;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#board {
+    width: 25rem;
+    aspect-ratio: 1/1;
+    display: grid;
+}
+
+.row {
+    display: flex;
+}
+
+.cell {
+    width: 33%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,6 +1,11 @@
 const start = document.getElementById("start");
 start.addEventListener("click", GameController);
 
+const cells = document.querySelectorAll('.cell');
+cells.forEach((cell) => {
+    cell.addEventListener("click", addMove);
+})
+
 //what represents empty space on the board
 const empty = "";
 
@@ -32,7 +37,16 @@ function GameBoard() {
             console.log(row.join(" | "));
         }
     }
-    return {getBoard, placeMarker, printBoard};
+
+    function drawOnScreen() {
+        for (let i = 0; i < cells.length; i++) {
+            let row = Math.floor(i / 3);
+            let col = i % 3;
+            cells[i].textContent = board[row][col];
+        }
+    }
+
+    return {getBoard, placeMarker, printBoard, drawOnScreen};
 }
 
 
@@ -94,6 +108,8 @@ function GameController() {
         return 0;
     }
 
+
+    //silmukka joka pyörittää peliä
     while (true) {
         console.log(`Its ${turn}'s turn to place a marker`);
         let row = prompt("Row: ");
@@ -116,6 +132,7 @@ function GameController() {
         }
 
         switchTurns();
+        board.drawOnScreen();
     }
     
 }
