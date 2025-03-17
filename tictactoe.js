@@ -1,10 +1,7 @@
 const start = document.getElementById("start");
 start.addEventListener("click", GameController);
 
-const cells = document.querySelectorAll('.cell');
-cells.forEach((cell) => {
-    cell.addEventListener("click", addMove);
-})
+const turn = document.getElementById("turn");
 
 //what represents empty space on the board
 const empty = "";
@@ -23,10 +20,37 @@ function GameBoard() {
 
     const getBoard = () => board;
 
-    const placeMarker = (row, column, players, player) => {
-        if (board[row][column] === "") {
-            board[row][column] = players[player].token;
-        } else {
+    const placeMarker = (cell, player) => {
+        //tähän joku keino varmistaa, että paikassa ei ole jo
+        //merkkiä
+        if (cell == 1) {
+            board[0][0] = player.marker;
+        } 
+        else if (cell == 2) {
+            board[0][1] = player.marker;
+        } 
+        else if (cell == 3) {
+            board[0][2] = player.marker;
+        } 
+        else if (cell == 4) {
+            board[1][0] = player.marker;
+        } 
+        else if (cell == 5) {
+            board[1][1] = player.marker;
+        } 
+        else if (cell == 6) {
+            board[1][2] = player.marker;
+        } 
+        else if (cell == 7) {
+            board[2][0] = player.marker;
+        } 
+        else if (cell == 8) {
+            board[2][1] = player.marker;
+        } 
+        else if (cell == 9) {
+            board[2][2] = player.marker;
+        } 
+        else {
             console.log("That spot is already taken! As a punishment, its now your opponents turn!");
         }
     }
@@ -38,20 +62,11 @@ function GameBoard() {
         }
     }
 
-    function drawOnScreen() {
-        for (let i = 0; i < cells.length; i++) {
-            let row = Math.floor(i / 3);
-            let col = i % 3;
-            cells[i].textContent = board[row][col];
-        }
-    }
-
-    return {getBoard, placeMarker, printBoard, drawOnScreen};
+    return {getBoard, placeMarker, printBoard};
 }
 
 
 function GameController() {
-
     const playerOneName = prompt("Give the name of player1: ");
     const playerTwoName = prompt("Give the name of player2: ");
 
@@ -61,23 +76,23 @@ function GameController() {
     const players = [
         {
             name: playerOneName,
-            token: playerOneMarker
+            marker: playerOneMarker
         },
         {
             name: playerTwoName,
-            token: playerTwoMarker 
+            marker: playerTwoMarker 
         }
     ];
 
     const board = GameBoard();
 
-    let turn = players[0].name;
+    let pelaaja = players[0];
 
-    function switchTurns() {
-        if (turn === players[0].name) {
-            turn = players[1].name
+    function switchPelaaja() {
+        if (pelaaja === players[0]) {
+            pelaaja = players[1];
         } else {
-            turn = players[0].name
+            pelaaja = players[0];
         }
     }
 
@@ -108,31 +123,37 @@ function GameController() {
         return 0;
     }
 
+    function handleCellClick(event) {
+        const cell = event.target;
+        turn.textContent = `It's ${pelaaja.name}'s turn`;
 
-    //silmukka joka pyörittää peliä
-    while (true) {
-        console.log(`Its ${turn}'s turn to place a marker`);
-        let row = prompt("Row: ");
-        let column = prompt("column: ");
+        const cellNum = parseInt(cell.dataset.cell);
+        //otetaan klikatun solun numero talteen
 
-        const playerIndex = turn === players[0].name ? 0 : 1;
-        board.placeMarker(row, column, players, playerIndex);
-        //Nyt jos laitetaan paikkaan jossa on jo markkeri, mennään
-        //suoraan uudelle kierrokselle, muista korjata
-        
-        board.printBoard();
+        board.placeMarker(cellNum, pelaaja);
+        //laitetaan pelaajan merkki klikattuun soluun
+
+        cell.textContent = pelaaja.marker;
+        //laitetaan pelaajan merkki laudalle UI:ssa
 
         if (isGameOver() === 1) {
-            console.log(`Game over, ${turn} won the game!`);
-            break;
+            console.log(`Game over, ${pelaaja.name} won the game!`);
+            return;
         }
         else if (isGameOver() === 2) {
             console.log("Its a tie!");
-            break;
+            return;
         }
+        // tarkista laudan tilanne
 
-        switchTurns();
-        board.drawOnScreen();
+        switchPelaaja();
+        //vaihda pelaaja
+
+
     }
+    document.querySelectorAll(".cell").forEach(cell => {
+        cell.addEventListener("click", handleCellClick);
+    });
+    
     
 }
