@@ -1,7 +1,12 @@
 const start = document.getElementById("start");
 start.addEventListener("click", GameController);
 
+const p1 = document.getElementById("player1");
+const p2 = document.getElementById("player2");
+
 const turn = document.getElementById("turn");
+
+const result = document.getElementById("result");
 
 //what represents empty space on the board
 const empty = "";
@@ -14,16 +19,17 @@ function GameBoard() {
     for (let i = 0; i < rows; i++) {
         board[i] = [];
         for (let j = 0; j < columns; j++) {
-            board[i][j] = empty;
+            board[i][j] = "";
         } 
     }
 
     const getBoard = () => board;
 
     const placeMarker = (cell, player) => {
-        //tähän joku keino varmistaa, että paikassa ei ole jo
-        //merkkiä
-        if (cell == 1) {
+        if (cell != "") {
+            console.log("That is already taken!")
+        }
+        else if (cell == 1) {
             board[0][0] = player.marker;
         } 
         else if (cell == 2) {
@@ -49,10 +55,11 @@ function GameBoard() {
         } 
         else if (cell == 9) {
             board[2][2] = player.marker;
-        } 
-        else {
-            console.log("That spot is already taken! As a punishment, its now your opponents turn!");
         }
+        //TODO: laita täällä markkeri UI:hin.
+        //paranna myös logiikkaa niin, että jos ruutu on varattu
+        //niin seuraavaan vuoroon mennään vasta kun pelaaja saa
+        //laitettua merkkinsä
     }
 
     //ei tarvita enää kun tehdään käyttöliittymää
@@ -69,6 +76,9 @@ function GameBoard() {
 function GameController() {
     const playerOneName = prompt("Give the name of player1: ");
     const playerTwoName = prompt("Give the name of player2: ");
+
+    p1.textContent = playerOneName;
+    p2.textContent = playerTwoName;
 
     const playerOneMarker = prompt("Give the marker of player1: ");
     const playerTwoMarker = prompt("Give the marker of player2: ");
@@ -87,6 +97,8 @@ function GameController() {
     const board = GameBoard();
 
     let pelaaja = players[0];
+
+    turn.textContent = `It's ${pelaaja.name}'s turn`;
 
     function switchPelaaja() {
         if (pelaaja === players[0]) {
@@ -123,33 +135,32 @@ function GameController() {
         return 0;
     }
 
+    function freezeGame() {
+
+    }
+
     function handleCellClick(event) {
         const cell = event.target;
-        turn.textContent = `It's ${pelaaja.name}'s turn`;
-
-        const cellNum = parseInt(cell.dataset.cell);
-        //otetaan klikatun solun numero talteen
+        const cellNum = cell.id;
 
         board.placeMarker(cellNum, pelaaja);
         //laitetaan pelaajan merkki klikattuun soluun
 
-        cell.textContent = pelaaja.marker;
-        //laitetaan pelaajan merkki laudalle UI:ssa
-
         if (isGameOver() === 1) {
-            console.log(`Game over, ${pelaaja.name} won the game!`);
+            result.textContent = `Game over, ${pelaaja.name} won the game!`;
+            //tässä kutsu aliohjelmaa joka lopettaa pelin
             return;
         }
         else if (isGameOver() === 2) {
-            console.log("Its a tie!");
+            result.textContent = "Its a tie!";
+            //tässä kutsu aliohjelmaa joka lopettaa pelin
             return;
         }
         // tarkista laudan tilanne
 
         switchPelaaja();
         //vaihda pelaaja
-
-
+        turn.textContent = `It's ${pelaaja.name}'s turn`;
     }
     document.querySelectorAll(".cell").forEach(cell => {
         cell.addEventListener("click", handleCellClick);

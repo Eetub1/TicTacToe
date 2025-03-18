@@ -33,3 +33,18 @@ body {
 .cell:hover {
     background-color: rgba(0, 0, 0, 0.1); /* Slightly darker */
 }
+
+.name {
+    width: 5rem;
+    height: 3rem;
+}
+
+#turn {
+    width: 5rem;
+    height: 3rem;
+}
+
+#result {
+    width: 5rem;
+    height: 3rem;
+}
