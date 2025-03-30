@@ -8,28 +8,35 @@ const turn = document.getElementById("turn");
 
 const result = document.getElementById("result");
 
+const cells = document.querySelectorAll(".cell")
+
 //what represents empty space on the board
 const empty = "";
 
 function GameBoard() {
     const rows = 3;
     const columns = 3;
-    const board = [];
+    const board = [
+        ["", "", ""],
+        ["", "", ""],
+        ["", "", ""]
+    ];
 
-    for (let i = 0; i < rows; i++) {
+    /*for (let i = 0; i < rows; i++) {
         board[i] = [];
         for (let j = 0; j < columns; j++) {
             board[i][j] = "";
         } 
-    }
+    }*/
 
     const getBoard = () => board;
 
     const placeMarker = (cell, player) => {
-        if (cell != "") {
-            console.log("That is already taken!")
-        }
-        else if (cell == 1) {
+        //pitäisi asettaa käyttöliittymään markkerin
+        
+
+
+        if (cell == 1) {
             board[0][0] = player.marker;
         } 
         else if (cell == 2) {
@@ -60,13 +67,15 @@ function GameBoard() {
         //paranna myös logiikkaa niin, että jos ruutu on varattu
         //niin seuraavaan vuoroon mennään vasta kun pelaaja saa
         //laitettua merkkinsä
+
     }
 
     //ei tarvita enää kun tehdään käyttöliittymää
     const printBoard = () => {
-        for (let row of board) {
+        for (const row of board) {
             console.log(row.join(" | "));
         }
+        console.log(" ")
     }
 
     return {getBoard, placeMarker, printBoard};
@@ -108,6 +117,14 @@ function GameController() {
         }
     }
 
+    function placeMarkerUI(cell, player) {
+        for (const cell1 of cells) {
+            if (cell1.id == cell) {
+                cell1.textContent = player.marker;
+            }
+        }
+    }
+
     function isGameOver() {
         let lauta = board.getBoard()
         //horizontal check
@@ -136,7 +153,9 @@ function GameController() {
     }
 
     function freezeGame() {
-
+        document.querySelectorAll(".cell").forEach((cell, index) => {
+            cell.id = `stopGame-${index}`;
+        });
     }
 
     function handleCellClick(event) {
@@ -145,15 +164,20 @@ function GameController() {
 
         board.placeMarker(cellNum, pelaaja);
         //laitetaan pelaajan merkki klikattuun soluun
+        //sekä lisätään se taulukkoon
+
+        board.printBoard();
+        
+        placeMarkerUI(cellNum, pelaaja);
 
         if (isGameOver() === 1) {
             result.textContent = `Game over, ${pelaaja.name} won the game!`;
-            //tässä kutsu aliohjelmaa joka lopettaa pelin
+            freezeGame();
             return;
         }
         else if (isGameOver() === 2) {
             result.textContent = "Its a tie!";
-            //tässä kutsu aliohjelmaa joka lopettaa pelin
+            freezeGame();
             return;
         }
         // tarkista laudan tilanne
@@ -161,6 +185,8 @@ function GameController() {
         switchPelaaja();
         //vaihda pelaaja
         turn.textContent = `It's ${pelaaja.name}'s turn`;
+
+        
     }
     document.querySelectorAll(".cell").forEach(cell => {
         cell.addEventListener("click", handleCellClick);
