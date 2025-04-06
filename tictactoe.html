@@ -31,6 +31,28 @@
     <div class="name" id="player1"></div>
     <div class="name" id="player2"></div>
     <div id="result"></div>
+
+    <dialog id="popup">
+        <form id="form">
+            <div class="form-row">
+                <label for="player1name">Player1 name:</label><input required id="player1name" type="text">
+            </div>
+            <div class="form-row">
+                <label for="player2name">Player2 name:</label><input required id="player2name" type="text">
+            </div>
+            <div class="form-row">
+                <label for="player1marker">Player1 marker</label><input required id="player1marker" type="text">
+            </div>
+            <div class="form-row">
+                <label for="player2marker">Player2 marker</label><input required id="player2marker" type="text">
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+        <div id="buttons">
+            <button id="close">Close</button>
+        </div>
+    </dialog>
+
     <script src="tictactoe.js"></script>
 </body>
 </html>

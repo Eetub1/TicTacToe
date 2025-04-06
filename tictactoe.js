@@ -1,9 +1,40 @@
+let players = []
+
 const start = document.getElementById("start");
-start.addEventListener("click", GameController);
+start.addEventListener("click", () => GameController());
+
+const closeBtn = document.getElementById("close");
+closeBtn.addEventListener("click", () => popup.close());
+const form = document.getElementById("form");
+
+form.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const playerOneName = document.getElementById("player1name").value;
+    const playerTwoName = document.getElementById("player2name").value;
+    const playerOneMarker = document.getElementById("player1marker").value;
+    const playerTwoMarker = document.getElementById("player2marker").value;
+
+    players = [
+        {
+            name: playerOneName,
+            marker: playerOneMarker
+        },
+        {
+            name: playerTwoName,
+            marker: playerTwoMarker 
+        }
+    ];
+    
+    form.reset();
+    popup.close();
+})
 
 const again = document.getElementById("again");
 again.style.display = 'none';
 again.addEventListener("click", newGame);
+
+const popup = document.querySelector("dialog");
 
 const p1 = document.getElementById("player1");
 const p2 = document.getElementById("player2");
@@ -13,24 +44,6 @@ const cells = document.querySelectorAll(".cell");
 
 const empty = "";
 let gameOver = false;
-let isFirstTime = true;
-
-const playerOneName = prompt("Give the name of player1: ");
-    const playerTwoName = prompt("Give the name of player2: ");
-    const playerOneMarker = prompt("Give the marker of player1: ");
-    const playerTwoMarker = prompt("Give the marker of player2: ");
-
-    const players = [
-        {
-            name: playerOneName,
-            marker: playerOneMarker
-        },
-        {
-            name: playerTwoName,
-            marker: playerTwoMarker 
-        }
-    ]; 
-
 
 const game = (function GameBoard() {
     const rows = 3;
@@ -82,9 +95,9 @@ const game = (function GameBoard() {
 })();
 
 
-function startGame(p1Name, p2TwoName) {
-    p1.textContent = p1Name;
-    p2.textContent = p2TwoName;
+function startGame() {
+    p1.textContent = players[0].name;
+    p2.textContent = players[1].name;
 }
 
 
@@ -143,15 +156,6 @@ function checkIsGameOver(pelaaja) {
 }
 
 
-function switchPelaaja(pelaaja, players) {
-    if (pelaaja === players[0]) {
-        pelaaja = players[1];
-    } else {
-        pelaaja = players[0];
-    }
-}
-
-
 function clearUi() {
     for (const cell of cells) {
         cell.textContent = empty;
@@ -165,23 +169,25 @@ function newGame() {
     gameOver = false;
     result.textContent = "";
     GameController();
-    
+}
+
+
+function switchPelaaja(pelaaja) {
+    if (pelaaja === players[0]) {
+        pelaaja = players[1];
+    } else {
+        pelaaja = players[0];
+    }
+    return pelaaja
 }
 
 
 function GameController() {
+    if (!players.length) popup.show();
     let pelaaja = players[0];
     turn.textContent = `It's ${pelaaja.name}'s turn`;
 
-    function switchPelaaja() {
-        if (pelaaja === players[0]) {
-            pelaaja = players[1];
-        } else {
-            pelaaja = players[0];
-        }
-    }
-
-    startGame(playerOneName, playerTwoName);
+    startGame();
 
     document.querySelectorAll(".cell").forEach(cell => {
         cell.addEventListener("click", function handleClick(event) {
@@ -193,7 +199,8 @@ function GameController() {
 
             checkIsGameOver(pelaaja); 
 
-            switchPelaaja();
+            pelaaja = switchPelaaja(pelaaja);
+            turn.textContent = `It's ${pelaaja.name}'s turn`;
         });
     });
 }
