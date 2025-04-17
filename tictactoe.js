@@ -1,4 +1,5 @@
 let players = []
+//muutostesti läppärillä
 
 const start = document.getElementById("start");
 start.addEventListener("click", () => GameController());
