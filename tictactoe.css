@@ -3,6 +3,11 @@ html, body {
     padding: 0;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+}
+
 div {
     border: 1px solid black;
 }
@@ -20,6 +25,10 @@ body {
 }
 
 .row {
+    display: flex;
+}
+
+.info {
     display: flex;
 }
 
