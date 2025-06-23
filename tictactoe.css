@@ -31,7 +31,7 @@ body {
 }
 
 .cell:hover {
-    background-color: rgba(0, 0, 0, 0.1); /* Slightly darker */
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .name {
