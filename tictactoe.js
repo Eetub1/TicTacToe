@@ -29,11 +29,24 @@ const again = document.getElementById("again")
 again.addEventListener("click", startNewGame)
 again.style.display = "none"
 
+const dialog = document.getElementById("popup")
+const closeBtn = document.getElementById("close")
+closeBtn.addEventListener("click", () => dialog.close())
 
-function startGame() {
+//forms API
+const form = document.forms.form;
+form.addEventListener("submit", function(event) {
+    event.preventDefault();
+    players[0].name = form.pl1.value
+    players[1].name = form.pl2.value
     player1name.textContent = players[0].name
     player2name.textContent = players[1].name
     turn.textContent = players[0].name
+    popup.close()
+})
+
+function startGame() {
+    dialog.showModal()
     whoseTurn = players[0]
 
     cells.forEach(cell => {
