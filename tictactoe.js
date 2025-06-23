@@ -178,4 +178,3 @@ const game = (function GameBoard() {
     }
     return {getBoard, placeMarker, printBoard, clearBoard};
 })();
-
