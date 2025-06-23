@@ -39,9 +39,9 @@ form.addEventListener("submit", function(event) {
     event.preventDefault();
     players[0].name = form.pl1.value
     players[1].name = form.pl2.value
-    player1name.textContent = players[0].name
-    player2name.textContent = players[1].name
-    turn.textContent = players[0].name
+    player1name.textContent = `Player 1: ${players[0].name}`
+    player2name.textContent = `Player 2: ${players[1].name}`
+    turn.textContent = `It's ${players[0].name}'s turn!`
     popup.close()
 })
 
@@ -52,7 +52,6 @@ function startGame() {
     cells.forEach(cell => {
         cell.addEventListener("click", (event) => handleClick(event))
     })
-
     startBtn.style.display = "none"
 }
 
@@ -73,7 +72,11 @@ function handleClick(event) {
         return
     }
     switchTurn(whoseTurn)
-    turn.textContent = whoseTurn.name
+    updateTurnText()
+}
+
+function updateTurnText() {
+    turn.textContent = `It's ${whoseTurn.name}'s turn!`
 }
 
 function startNewGame() {
@@ -82,7 +85,7 @@ function startNewGame() {
     clearUi()
     game.clearBoard()
     whoseTurn = players[0]
-    turn.textContent = whoseTurn.name
+    updateTurnText()
     gameState = false
 }
 

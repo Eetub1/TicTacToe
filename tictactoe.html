@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="tictactoe.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <title>Document</title>
 </head>
 <body>
@@ -28,24 +29,32 @@
     </div>
 
     <div id="info"></div>
-    <div id="turn"></div>
-    <div class="name" id="player1"></div>
-    <div class="name" id="player2"></div>
-    <div id="result"></div>
+    <div id="boxesCont">
+        <div class="boxRow">
+            <div class="infoBox" id="player1"></div>
+            <div class="infoBox" id="player2"></div>
+        </div>
+
+        <div class="boxRow">
+            <div class="infoBox" id="turn"></div>
+            <div class="infoBox" id="result"></div>
+        </div>
+    </div>
 
     <dialog id="popup">
         <form id="form">
             <div class="form-row">
                 <label for="player1name">Player1 name:</label><input name="pl1" required id="player1name" type="text">
             </div>
-            <div class="form-row">
+            <div id="formrow2" class="form-row">
                 <label for="player2name">Player2 name:</label><input name="pl2" required id="player2name" type="text">
             </div>
-            <button type="submit">Submit</button>
+            <div id="buttons">
+                <button class="formBtn" type="submit">Submit</button>
+                <button class="formBtn" id="close">Close</button>
+            </div>
         </form>
-        <div id="buttons">
-            <button id="close">Close</button>
-        </div>
+        
     </dialog>
 
     <script src="tictactoe.js"></script>
